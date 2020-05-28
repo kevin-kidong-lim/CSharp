@@ -727,7 +727,7 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             string name = (string)dataGridView1.Rows[e.RowIndex].Cells[2].Value;
-            Console.WriteLine("dataGridView1_CellDoubleClick :" + name);
+            Console.WriteLine("dataGridView1_CellDoubleClick ok :" + name);
             // id,[regDate],[payMethod],[checkNo],[payee],[total],[gst],[category],[etc] ,[createDate], 'Modify' 
             /*
              cmd.Parameters.AddWithValue("@regDate", dt_regDate.Value);

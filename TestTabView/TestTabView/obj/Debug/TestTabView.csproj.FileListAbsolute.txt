@@ -1,0 +1,10 @@
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\bin\Debug\TestTabView.exe.config
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\bin\Debug\TestTabView.exe
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\bin\Debug\TestTabView.pdb
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\obj\Debug\TestTabView.csprojAssemblyReference.cache
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\obj\Debug\TestTabView.Form1.resources
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\obj\Debug\TestTabView.Properties.Resources.resources
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\obj\Debug\TestTabView.csproj.GenerateResource.cache
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\obj\Debug\TestTabView.csproj.CoreCompileInputs.cache
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\obj\Debug\TestTabView.exe
+C:\Users\kevin\source\repos\purchageIns\TestTabView\TestTabView\obj\Debug\TestTabView.pdb
