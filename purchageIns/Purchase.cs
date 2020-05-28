@@ -33,6 +33,7 @@ namespace purchageIns
             this.CreateDate = createDate;
         }
         /*
+         * comment
         public string RegDate
         {
             get
