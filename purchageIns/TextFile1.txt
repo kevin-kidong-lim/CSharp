@@ -1,0 +1,88 @@
+﻿프로젝트 참고 내용..
+
+쿼리: https://blog.naver.com/whwns5/221161953351
+var settings = System.Configuration.ConfigurationManager.ConnectionStrings["DataBase"];
+            if (settings != null && !string.IsNullOrEmpty(settings.ConnectionString))
+            {
+                using (var conn = new SqlConnection(settings.ConnectionString))
+                using (var cmd = new SqlCommand(@"IF EXISTS (SELECT [Identity] FROM [System].[JSONConfig] WHERE [Identity] = @Identity )
+                                                    UPDATE [System].[JSONConfig] 
+                                                        SET [JsonData]       = @JsonData,
+                                                            [Memo]           = @Memo,
+                                                            [ModifyDate]     = getdate(),
+                                                            [ModifyOperator] = 'System'
+                                                    WHERE [Identity] = @Identity;
+                                                  ELSE
+                                                    INSERT INTO [System].[JSONConfig]
+                                                           ([Name]
+                                                           ,[JsonData]
+                                                           ,[Memo]
+                                                           ,[Status]
+                                                           ,[CreateDate]
+                                                           ,[CreateOperator]
+                                                           )
+                                                     VALUES
+                                                           (@Name
+                                                           ,@JsonData
+                                                           ,@Memo
+                                                           ,@Status
+                                                           ,GetDate()
+                                                           ,'System'
+                                                           );
+                                                    SELECT CAST(scope_identity() AS int)
+                                                ", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@Identity", model.Identity);
+                    cmd.Parameters.AddWithValue("@Name", model.Name);
+                    cmd.Parameters.AddWithValue("@JsonData", model.JsonData);
+                    cmd.Parameters.AddWithValue("@Memo", model.Memo);
+                    cmd.Parameters.AddWithValue("@Status", model.Status);
+
+                    var obj = cmd.ExecuteScalar();
+                    int id;
+
+                    int.TryParse(obj.ToString(),out id);
+                    result.Result = true;
+                    result.Data = id;
+
+                    if (conn.State == System.Data.ConnectionState.Open) conn.Close();
+                }
+
+[출처] C# - SqlConnection & SqlCommand|작성자 whwns5
+
+
+https://blog.naver.com/asuno1/220011972426
+
+작업을 하다보면 Insert를 하고 적용된 고유의 값을 받아 하위 테이블 FK(Foreign Key)로 사용 할 때가 있다
+위와 같은 작업시 Insert후 Select를 날리는 것보다 아래와 같이 Identity 값을 받아서 사용 하는 것이 더 좋은 거 같다고 생각된다
+​
+핵샘 코드 :  1.  insert into table이름(컬럼) Values (값); SELECT CAST(scope_identity() AS int)";
+                 2.  ​newProdID = (Int32)cmd.ExecuteScalar();
+​
+전체 예제(출처 mdns​) :  
+static public int AddProductCategory(string newName, string connString)
+{
+    Int32 newProdID = 0;
+    string sql =
+        "INSERT INTO Production.ProductCategory (Name) VALUES (@Name); "
+        + "SELECT CAST(scope_identity() AS int)";
+    using (SqlConnection conn = new SqlConnection(connString))
+    {
+        SqlCommand cmd = new SqlCommand(sql, conn);
+        cmd.Parameters.Add("@Name", SqlDbType.VarChar);
+        cmd.Parameters["@name"].Value = newName;
+        try
+        {
+            conn.Open();
+            newProdID = (Int32)cmd.ExecuteScalar();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+    return (int)newProdID;
+}
+[출처] [C# / MSSQL] Insert 이후 Identity 값을 리턴 받고 싶을경우 C# ExecuteScalar() 사용법|작성자 아슈

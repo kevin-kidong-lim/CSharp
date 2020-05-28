@@ -1,0 +1,15 @@
+C:\Users\kevin\source\repos\purchageIns\purchageIns\bin\Debug\purchageIns.exe.config
+C:\Users\kevin\source\repos\purchageIns\purchageIns\bin\Debug\purchageIns.exe
+C:\Users\kevin\source\repos\purchageIns\purchageIns\bin\Debug\purchageIns.pdb
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.csprojAssemblyReference.cache
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.Form1.resources
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.Properties.Resources.resources
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.csproj.GenerateResource.cache
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.csproj.CoreCompileInputs.cache
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.exe
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.pdb
+C:\Users\kevin\source\repos\purchageIns\purchageIns\bin\Debug\insDB.mdf
+C:\Users\kevin\source\repos\purchageIns\purchageIns\bin\Debug\insDB_log.ldf
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.Form2.resources
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.csproj.ResolveComReference.cache
+C:\Users\kevin\source\repos\purchageIns\purchageIns\obj\Debug\purchageIns.OrderForm.resources
