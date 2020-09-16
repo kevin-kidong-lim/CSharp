@@ -15,11 +15,12 @@ namespace purchageIns
         public string Payee;
         public double PayPrice;
         public float Gst;
+        public float Pst;
         public string Category;
         public string Etc;
         public string CreateDate;
 
-        public Purchase(DateTime regDate, string payMethod, string checkNo, string payee, string payPrice, string gst, string category
+        public Purchase(DateTime regDate, string payMethod, string checkNo, string payee, string payPrice, string gst, string pst, string category
                 , string etc, string createDate)
         {
             this.RegDate = regDate;
@@ -28,6 +29,7 @@ namespace purchageIns
             this.Payee = payee;
             this.PayPrice = Convert.ToDouble(payPrice);
             this.Gst = float.Parse(gst);
+            this.Pst = float.Parse(pst);
             this.Category = category;
             this.Etc = etc;
             this.CreateDate = createDate;

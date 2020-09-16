@@ -90,41 +90,49 @@ namespace purchageIns
         }
         private void init_make_ComboBox(int p_code)
         {
-            // cb_payee.Items.Add()
-            db.ConnectDB(); // db connectSystem.
-            // grid.DataSource = dt;  ,sum([gst]) as gst_sum 
-            string sql2 = "";
-            sql2 = sql2 + "select p_code, c_code, name  from common_code ";
-            sql2 = sql2 + "where  p_code = " + p_code + "";
-
-            // DataAdapter da = new DataAdapter(sql2, db.getConnection());
-            SqlDataAdapter adapter = new SqlDataAdapter(sql2, db.getConnection());
-            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-
-            if (p_code == 1)
+            try
             {
-                cb_payee.DataSource = dt;
-                cb_payee.DisplayMember = "name";
-                cb_payee.ValueMember = "c_code";
 
 
-            }
-            else if (p_code == 2)
+                // cb_payee.Items.Add()
+                db.ConnectDB(); // db connectSystem.
+                                // grid.DataSource = dt;  ,sum([gst]) as gst_sum 
+                string sql2 = "";
+                sql2 = sql2 + "select p_code, c_code, name  from common_code ";
+                sql2 = sql2 + "where  p_code = " + p_code + "";
+
+                // DataAdapter da = new DataAdapter(sql2, db.getConnection());
+                SqlDataAdapter adapter = new SqlDataAdapter(sql2, db.getConnection());
+                SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (p_code == 1)
+                {
+                    cb_payee.DataSource = dt;
+                    cb_payee.DisplayMember = "name";
+                    cb_payee.ValueMember = "c_code";
+
+
+                }
+                else if (p_code == 2)
+                {
+                    cb_category.DataSource = dt;
+                    cb_category.DisplayMember = "name";
+                    cb_category.ValueMember = "c_code";
+
+                }
+                else if (p_code == 3)
+                {
+                    cb_payMethod.DataSource = dt;
+                    cb_payMethod.DisplayMember = "name";
+                    cb_payMethod.ValueMember = "c_code";
+                }
+                db.CloseDB();
+            }catch(SqlException)
             {
-                cb_category.DataSource = dt;
-                cb_category.DisplayMember = "name";
-                cb_category.ValueMember = "c_code";
-
+                MessageBox.Show("SQL Query Failed !!");
             }
-            else if (p_code == 3)
-            {
-                cb_payMethod.DataSource = dt;
-                cb_payMethod.DisplayMember = "name";
-                cb_payMethod.ValueMember = "c_code";
-            }
-            db.CloseDB();
         }
 
         private void init_make_ComboBox2(int p_code)
@@ -247,7 +255,7 @@ namespace purchageIns
             else
             {
                 Console.WriteLine(" button_click ");
-                string sql = "select id, [regDate],[payMethod],[checkNo],[payee],[total],[gst],[category],[etc] , delete_flag,[createDate],'Modify' as Modify from [dbo].[purchase] order by regdate desc";
+                string sql = "select id, [regDate],[payMethod],[checkNo],[payee],[total],[gst], [pst], [category],[etc] , delete_flag,[createDate],'Modify' as Modify from [dbo].[purchase] order by regdate desc";
                 db.ConnectDB(); // db connectSystem.
                 dt = db.GetDBTable(sql);
                 dataGridView1.DataSource = dt;
@@ -335,15 +343,15 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
             }
 
             Purchase purchase = new Purchase(dt_regDate.Value, cb_payMethod.Text, txt_checkNo.Text, cb_payee.Text, txt_total.Text,
-            txt_gst.Text, cb_category.Text, txt_etc.Text, DateTime.Now.ToString());
+            txt_gst.Text, txt_pst.Text, cb_category.Text, txt_etc.Text, DateTime.Now.ToString());
 
             string delete_flag = "Y";
             if (radioButton5.Checked)
             {
                 delete_flag = "";
             }
-            string sql = " insert into  [dbo].[purchase] ([regDate],[payMethod],[checkNo],[payee],[total],[gst],[category],[etc], delete_flag,[createDate])"
-                     + " values( @regDate,@payMethod,@checkNo,@payee,@total,@gst,@category,@etc, @delete_flag,@createDate) ";
+            string sql = " insert into  [dbo].[purchase] ([regDate],[payMethod],[checkNo],[payee],[total],[gst],[pst],[category],[etc], delete_flag,[createDate])"
+                     + " values( @regDate,@payMethod,@checkNo,@payee,@total,@gst,@pst,@category,@etc, @delete_flag,@createDate) ";
 
             Console.WriteLine("Today: {0}", DateTime.Today);
 
@@ -357,6 +365,7 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
                     cmd.Parameters.AddWithValue("@payee", cb_payee.Text);
                     cmd.Parameters.AddWithValue("@total", System.Convert.ToDecimal(txt_total.Text));
                     cmd.Parameters.AddWithValue("@gst", System.Convert.ToDecimal(txt_gst.Text));
+                    cmd.Parameters.AddWithValue("@pst", System.Convert.ToDecimal(txt_pst.Text));
                     cmd.Parameters.AddWithValue("@category", cb_category.Text);
                     cmd.Parameters.AddWithValue("@etc", txt_etc.Text);
                     cmd.Parameters.AddWithValue("@delete_flag", delete_flag);
@@ -507,10 +516,10 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
                 label7.Text = search_month_lable;
                 label8.Text = "";
 
-                sql += "select id,[regDate],[payMethod],[checkNo],[payee],[total],[gst],[category],[etc] , delete_flag,[createDate], 'Modify' as Modify from [dbo].[purchase] ";
+                sql += "select id,[regDate],[payMethod],[checkNo],[payee],[total],[gst],[pst],[category],[etc] , delete_flag,[createDate], 'Modify' as Modify from [dbo].[purchase] ";
                 sql += " where   convert(varchar(4),[regDate], 112) = '" + s_date.Substring(0, 4) + "'  " + subQuery + " ";
                 sql = sql + "union all ";
-                sql = sql + "select  '' as id , '' as [regDate]  , '' as [payMethod], '' as [checkNo] ,'' as [payee],sum([total]) as total,sum([gst]) as gst ,'' as [category],'' as [etc] , '' as delete_flag, '' as [createDate] , 'Modify' as Modify  from purchase ";
+                sql = sql + "select  '' as id , '' as [regDate]  , '' as [payMethod], '' as [checkNo] ,'' as [payee],sum([total]) as total,sum([gst]) as gst ,sum(pst) as pst, '' as [category],'' as [etc] , '' as delete_flag, '' as [createDate] , 'Modify' as Modify  from purchase ";
                 sql = sql + "where convert(varchar(4),[regDate], 112) = '" + s_date.Substring(0, 4) + "' " + subQuery + " ";
 
             }
@@ -536,12 +545,12 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
 
                 // 월 검색 버튼을 클릭했을경우 ..
                 if (label8.Text != "" && label8.Text != "Search") {
-                    sql += "select " + g_name + " ,sum([total]) total ,sum([gst]) gst from [dbo].[purchase] ";
+                    sql += "select " + g_name + " ,sum([total]) total ,sum([gst]) gst , sum(pst) pst from [dbo].[purchase] ";
                     sql += " where   convert(varchar(6),[regDate], 112) = '" + label8.Text + "'  " + subQuery + " group by " + g_name + " ";
                 }
                 else
                 {
-                    sql += "select " + g_name + " ,sum([total]) total ,sum([gst]) gst from [dbo].[purchase] ";
+                    sql += "select " + g_name + " ,sum([total]) total ,sum([gst]) gst,sum(pst) pst  from [dbo].[purchase] ";
                     sql += " where   convert(varchar(4),[regDate], 112) = '" + s_date.Substring(0, 4) + "'  " + subQuery + " group by " + g_name + " ";
                 }
                 
@@ -552,10 +561,10 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
                 label7.Text = "";
                 label8.Text = search_month_lable;
 
-                sql += "select id,[regDate],[payMethod],[checkNo],[payee],[total],[gst],[category],[etc],delete_flag ,[createDate], 'Modify' as Modify from [dbo].[purchase] ";
+                sql += "select id,[regDate],[payMethod],[checkNo],[payee],[total],[gst], [pst], [category],[etc],delete_flag ,[createDate], 'Modify' as Modify from [dbo].[purchase] ";
                 sql += " where  convert(varchar(6),[regDate], 112) between '" + s_date + "' and '" + e_date + "'  " + subQuery + " ";
                 sql = sql + "union all ";
-                sql = sql + "select  '' as id , '' as [regDate]  , '' as [payMethod], '' as [checkNo] ,'' as [payee],sum([total]) as total,sum([gst]) as gst ,'' as [category],'' as [etc] , '' as delete_flag, '' as [createDate] , 'Modify' as Modify  from purchase ";
+                sql = sql + "select  '' as id , '' as [regDate]  , '' as [payMethod], '' as [checkNo] ,'' as [payee],sum([total]) as total,sum([gst]) as gst , sum(pst) as pst, '' as [category],'' as [etc] , '' as delete_flag, '' as [createDate] , 'Modify' as Modify  from purchase ";
                 sql = sql + "where convert(varchar(6),[regDate], 112) between '" + s_date + "' and '" + e_date + "' " + subQuery + " ";
 
             }
@@ -575,16 +584,25 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
             string sql2 = "";
             if (s_date.Contains("Search"))
             {
-                sql2 = sql2 + "select sum([total]) as total_sum ,sum([gst]) as gst_sum  from purchase ";
+                sql2 = sql2 + "select sum([total]) as total_sum ,sum([gst]) as gst_sum ,sum([pst]) as pst_sum  from purchase ";
                 sql2 = sql2 + "where  convert(varchar(4),[regDate], 112) between @s_date and @e_date  " + subQuery + " ";
                 s_date = s_date.Substring(0, 4);
                 e_date = e_date.Substring(0, 4);
             }
             else
             {
-                sql2 = sql2 + "select sum([total]) as total_sum ,sum([gst]) as gst_sum  from purchase ";
+                sql2 = sql2 + "select sum([total]) as total_sum ,sum([gst]) as gst_sum,sum([pst]) as pst_sum  from purchase ";
                 sql2 = sql2 + "where  convert(varchar(6),[regDate], 112) between @s_date and @e_date  " + subQuery + " ";
+                s_date = label8.Text; //s_date.Substring(0, 4);
+                e_date = label8.Text; //e_date.Substring(0, 4);
+                Console.WriteLine(">>>s_date: " + s_date);
+                Console.WriteLine(">>>e_date: " + e_date);
             }
+
+            Console.WriteLine("sql2: " + sql2);
+            Console.WriteLine("s_date: " + s_date);
+            Console.WriteLine("e_date: " + e_date);
+
             using (SqlCommand cmd = new SqlCommand(sql2, db.getConnection()))
             {
                 cmd.CommandType = CommandType.Text;
@@ -604,16 +622,19 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
                     SqlDataReader dr = cmd.ExecuteReader();
                     string total_sum = "0";
                     string gst_sum = "0";
+                    string pst_sum = "0";
 
                     while (dr.Read())
                     {
                         total_sum = dr["total_sum"].ToString();
                         gst_sum = dr["gst_sum"].ToString();
+                        pst_sum = dr["pst_sum"].ToString();
                         Console.WriteLine("total_sum: " + total_sum);
                         Console.WriteLine("gst_sum: " + gst_sum);
                     }
                     lbl_total_sum.Text = total_sum;
                     lbl_gst_sum.Text = gst_sum;
+                    lbl_pst_sum.Text = pst_sum;
                 }
                 catch (Exception ex)
                 {
@@ -746,9 +767,10 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
             cb_payee.Text = (string)dataGridView1.Rows[e.RowIndex].Cells[4].Value;
             txt_total.Text = dataGridView1.Rows[e.RowIndex].Cells[5].Value.ToString();
             txt_gst.Text = dataGridView1.Rows[e.RowIndex].Cells[6].Value.ToString();
-            cb_category.Text = (string)dataGridView1.Rows[e.RowIndex].Cells[7].Value;
-            txt_etc.Text = (string)dataGridView1.Rows[e.RowIndex].Cells[8].Value;
-            if ((string)dataGridView1.Rows[e.RowIndex].Cells[9].Value == "Y")
+            txt_pst.Text = dataGridView1.Rows[e.RowIndex].Cells[7].Value.ToString();
+            cb_category.Text = (string)dataGridView1.Rows[e.RowIndex].Cells[8].Value;
+            txt_etc.Text = (string)dataGridView1.Rows[e.RowIndex].Cells[9].Value;
+            if ((string)dataGridView1.Rows[e.RowIndex].Cells[10].Value == "Y")
             {
                 radioButton4.Checked = true;
             }
@@ -781,6 +803,7 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
             cb_payee.Text = "";
             txt_total.Text = "";
             txt_gst.Text = "";
+            txt_pst.Text = "";
             cb_category.Text = "";
             txt_etc.Text = "";
             purchaseId.Text = "";
@@ -878,7 +901,7 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
             }
             MessageBox.Show(delete_flag);
             string sql = " update  [dbo].[purchase] set [regDate] = @regDate ,[payMethod] = @payMethod ";
-            sql += " ,[checkNo] = @checkNo,[payee] = @payee,[total] = @total,[gst] = @gst,[category] = @category ";
+            sql += " ,[checkNo] = @checkNo,[payee] = @payee,[total] = @total,[gst] = @gst,[pst] = @pst,[category] = @category ";
             sql += ",[etc]=@etc , delete_flag = @delete_flag, [createDate] = @createDate"
                + "  where id = @id";
 
@@ -894,6 +917,7 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
                     cmd.Parameters.AddWithValue("@payee", cb_payee.Text);
                     cmd.Parameters.AddWithValue("@total", System.Convert.ToDecimal(txt_total.Text));
                     cmd.Parameters.AddWithValue("@gst", System.Convert.ToDecimal(txt_gst.Text));
+                    cmd.Parameters.AddWithValue("@pst", System.Convert.ToDecimal(txt_pst.Text));
                     cmd.Parameters.AddWithValue("@category", cb_category.Text);
                     cmd.Parameters.AddWithValue("@etc", txt_etc.Text);
                     cmd.Parameters.AddWithValue("@delete_flag", delete_flag);
@@ -1061,6 +1085,18 @@ newCmd.Parameters.AddWithValue("@EmployeeID", contract.EmployeeID);
             //orderForm.showDialog();
 
         }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+
 
 
         /*

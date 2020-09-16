@@ -15,9 +15,12 @@ ALTER TABLE dbo.purchase ALTER COLUMN pst NUMERIC (18, 2);
 
 select  convert(varchar(6),[regDate], 112) ,sum([total]) as total
 ,sum([gst]) as gst  ,delete_flag
-from purchase where convert(varchar(6),[regDate], 112) between '201901' and '201912'
+from dbo.purchase where convert(varchar(6),[regDate], 112) between '201901' and '201912'
 and category ='Purchase' 
 group by convert(varchar(6),[regDate], 112) ,delete_flag
+
+select payee from purchase
+group by payee
 
 update purchase set payee ='Best Buy' where payee='Best Buy' ;
 update purchase set payee ='BOUCLAIR' where payee='BOUCLAIR' ;
@@ -57,6 +60,7 @@ update purchase set payee ='Nestle canada' where payee='nestle canada' ;
 update purchase set payee ='PeTRO-CANADA' where payee='PeTRO-CANADA' ;
 update purchase set payee ='RBH' where payee='RBH' ;
 update purchase set payee ='Red Bull Canada' where payee='red bull canada' ;
+update purchase set payee ='Red Bull Canada' where payee='redbull canada' ;
 update purchase set payee ='Red lobster' where payee='red lobster' ;
 update purchase set payee ='Roges' where payee='ROGERS' ;
 update purchase set payee ='Roges' where payee='Roges' ;
