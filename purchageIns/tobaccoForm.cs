@@ -89,7 +89,7 @@ namespace purchageIns
             dr[2] = b_total_amt;
             dr[3] = c_total_amt;
             dt.Rows.Add(dr);
-            //gid add
+            //gid add, minuUpdate
             setRowsLine(dataGridView2);
             lastLine = dataGridView2.Rows.Count - 1;
             dataGridView2.Rows[lastLine].DefaultCellStyle.BackColor = Color.YellowGreen;
