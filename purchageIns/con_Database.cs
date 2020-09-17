@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,11 +14,15 @@ namespace purchageIns
         // Server=(LocalDB)\MSSQLLocalDB; Integrated Security = true; AttachDbFileName=D:\Data\MyDB1.mdf
         //(localdb)\MSSQLLocalDB;Integrated Security=true
         //(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kevin\source\repos\purchageIns\purchageIns\Database1.mdf;Integrated Security=True
-        public static string constring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Work\Ins\purchageIns\purchageIns\insDB.mdf;Integrated Security=True";
-                //public static string constring = @"Data Source=아이피주소;Initial Catalog=데이터베이스명;Persist Security Info=True;User ID=아이디;Password=비밀번호";
-                //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kevin\source\repos\purchageIns\purchageIns\Database1.mdf;Integrated Security=True
-                // 출처: https://jongtae5673.tistory.com/entry/C-과-Database-연동하기예제 [별이지는밤]
-                //https://jongtae5673.tistory.com/entry/C-과-Database-연동하기예제
+        string dbPath = Path.GetFullPath("insDB.mdf");
+       
+        //Console.WriteLine("dbPath : " + dbPath);
+        public static string constring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|insDB.mdf;Integrated Security=True";
+        //public static string constring = @"Data Source=아이피주소;Initial Catalog=데이터베이스명;Persist Security Info=True;User ID=아이디;Password=비밀번호";
+        //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kevin\source\repos\purchageIns\purchageIns\Database1.mdf;Integrated Security=True
+        // 출처: https://jongtae5673.tistory.com/entry/C-과-Database-연동하기예제 [별이지는밤]
+        //https://jongtae5673.tistory.com/entry/C-과-Database-연동하기예제
+
 
                 SqlConnection conn = new SqlConnection();
         
@@ -25,6 +30,8 @@ namespace purchageIns
 
         public SqlConnection getConnection()
         {
+
+            Console.WriteLine("constring : " + constring);
             return conn;
         }
         // db Connect
